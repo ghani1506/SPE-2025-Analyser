@@ -261,15 +261,15 @@ if summary_df.empty or detail_df.empty:
     st.stop()
 
 st.subheader("AO Performance Summary")
-pivot = summary_df.pivot_table(index=["School", "Paper"], columns="AO", values="Performance %", aggfunc="first").reset_index()
-for col in ["AO1", "AO2", "AO3"]:
-    if col in pivot.columns:
-        pivot[col] = pivot[col].round(2)
-st.dataframe(pivot, use_container_width=True)
+pivot_chart = summary_df.pivot_table(
+    index="School - Paper",
+    columns="AO",
+    values="Performance %",
+    aggfunc="mean"
+)
 
-chart_df = summary_df.copy()
-chart_df["School - Paper"] = chart_df["School"] + " - " + chart_df["Paper"]
-st.bar_chart(chart_df, x="School - Paper", y="Performance %", color="AO")
+st.bar_chart(pivot_chart)
+
 
 st.subheader("Item-Level Details")
 show_detail = detail_df.copy()
